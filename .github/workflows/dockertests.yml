@@ -2,7 +2,7 @@ name: Docker tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, github-workflow-test ]
   pull_request:
     branches: [ master ]
 
