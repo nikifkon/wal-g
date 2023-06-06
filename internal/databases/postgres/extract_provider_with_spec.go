@@ -16,8 +16,8 @@ const (
 )
 
 type ExtractProviderDBSpec struct {
-	ExtractProviderImpl
-	onlyDatabases []string
+	ExtractProviderImpl ExtractProvider
+	onlyDatabases       []string
 }
 
 func NewExtractProviderDBSpec(onlyDatabases []string) *ExtractProviderDBSpec {
