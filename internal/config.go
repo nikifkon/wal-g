@@ -247,7 +247,7 @@ var (
 	GPDefaultSettings = map[string]string{
 		GPLogsDirectory:        "/var/log",
 		PgWalSize:              "64",
-		GPSegmentsPollInterval: "5m",
+		GPSegmentsPollInterval: "10s",
 		GPSegmentsUpdInterval:  "10s",
 		GPSegmentsPollRetries:  "5",
 		GPSegmentStatesDir:     "/tmp",
