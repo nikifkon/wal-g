@@ -144,6 +144,7 @@ func NewDirDatabaseTarBallComposer(
 		tarFileSets:        tarFileSets,
 		errorGroup:         errorGroup,
 		ctx:                ctx,
+		fileDirCollection:  make(map[string][]*internal.ComposeFileInfo),
 	}
 
 	maxUploadDiskConcurrency, err := internal.GetMaxUploadDiskConcurrency()
