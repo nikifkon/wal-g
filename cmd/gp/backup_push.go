@@ -59,7 +59,7 @@ var (
 			segPollRetries := viper.GetInt(internal.GPSegmentsPollRetries)
 
 			arguments := greenplum.NewBackupArguments(permanent, fullBackup, userData, prepareSegmentFwdArgs(), logsDir,
-				segPollInterval, segPollRetries, deltaBaseSelector, useDatabaseComposer)
+				segPollInterval, segPollRetries, deltaBaseSelector)
 			backupHandler, err := greenplum.NewBackupHandler(arguments)
 			tracelog.ErrorLogger.FatalOnError(err)
 			backupHandler.HandleBackupPush()
@@ -78,6 +78,7 @@ var (
 func prepareSegmentFwdArgs() []greenplum.SegmentFwdArg {
 	return []greenplum.SegmentFwdArg{
 		{Name: permanentFlag, Value: strconv.FormatBool(permanent)},
+		{Name: useDatabaseComposerFlag, Value: strconv.FormatBool(useDatabaseComposer)},
 	}
 }
 
