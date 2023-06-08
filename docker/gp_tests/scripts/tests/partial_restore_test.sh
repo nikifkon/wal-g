@@ -43,8 +43,9 @@ psql -p 6000 -d to_skip -c "INSERT INTO ao select i, i FROM generate_series(3,4)
 psql -p 6000 -d to_skip -c "INSERT INTO co select i, i FROM generate_series(3,4)i;"
 
 run_backup_logged ${TMP_CONFIG} ${PGDATA}
+stop_and_delete_cluster_dir
 
-wal-g --config=${TMP_CONFIG} backup-fetch ${PGDATA} LATEST --restore-only=to_restore
+wal-g --config=${TMP_CONFIG} backup-fetch ${PGDATA} LATEST --in-place --restore-only=to_restore
 
 if [ "$(psql -p 6000 -t -c "select a from heap order by a;" -d to_restore -A)" != "$(printf '1\n2')" ]; then
   echo "Partial restore of heap table doesn't work"
@@ -69,8 +70,9 @@ if [ "$(psql -p 6000 -t -c "select a, b from co order by a, b;" -d to_skip -A)" 
   exit 1
 echo "First database partial restore success!!!!!!"
 
-stop_and_delete_cluster_dir
+start_cluster
 cleanup
+
 # wal-g --config=${TMP_CONFIG} delete everything FORCE --confirm
 
 # /usr/lib/postgresql/10/bin/initdb ${PGDATA}

@@ -65,7 +65,7 @@ setup_wal_archiving() {
   wal_level = archive
   archive_mode = on
   archive_timeout = 600
-  archive_command = '/usr/bin/timeout 60 wal-g seg wal-push %p --content-id=${arr[0]} --config ${TMP_CONFIG}'
+  archive_command = '/usr/bin/timeout 60 /usr/local/wal-g/main/gp/wal-g seg wal-push %p --content-id=${arr[0]} --config ${TMP_CONFIG}'
   " >> ${arr[1]}/postgresql.conf
   done
   stop_cluster

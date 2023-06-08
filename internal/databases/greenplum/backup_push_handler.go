@@ -30,11 +30,12 @@ const (
 
 // BackupArguments holds all arguments parsed from cmd to this handler class
 type BackupArguments struct {
-	isPermanent    bool
-	isFull         bool
-	userData       interface{}
-	segmentFwdArgs []SegmentFwdArg
-	logsDir        string
+	isPermanent         bool
+	isFull              bool
+	userData            interface{}
+	segmentFwdArgs      []SegmentFwdArg
+	logsDir             string
+	useDatabaseComposer bool
 
 	segPollInterval time.Duration
 	segPollRetries  int
@@ -509,16 +510,17 @@ func NewBackupHandler(arguments BackupArguments) (bh *BackupHandler, err error) 
 
 // NewBackupArguments creates a BackupArgument object to hold the arguments from the cmd
 func NewBackupArguments(isPermanent, isFull bool, userData interface{}, fwdArgs []SegmentFwdArg, logsDir string,
-	segPollInterval time.Duration, segPollRetries int, deltaBaseSelector internal.BackupSelector) BackupArguments {
+	segPollInterval time.Duration, segPollRetries int, deltaBaseSelector internal.BackupSelector, useDatabaseComposer bool) BackupArguments {
 	return BackupArguments{
-		isPermanent:       isPermanent,
-		isFull:            isFull,
-		userData:          userData,
-		segmentFwdArgs:    fwdArgs,
-		logsDir:           logsDir,
-		segPollInterval:   segPollInterval,
-		segPollRetries:    segPollRetries,
-		deltaBaseSelector: deltaBaseSelector,
+		isPermanent:         isPermanent,
+		isFull:              isFull,
+		userData:            userData,
+		segmentFwdArgs:      fwdArgs,
+		logsDir:             logsDir,
+		segPollInterval:     segPollInterval,
+		segPollRetries:      segPollRetries,
+		deltaBaseSelector:   deltaBaseSelector,
+		useDatabaseComposer: useDatabaseComposer,
 	}
 }
 

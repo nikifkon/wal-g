@@ -4,7 +4,7 @@ import (
 	"github.com/wal-g/wal-g/internal/databases/postgres"
 )
 
-func NewSegBackupHandler(arguments postgres.BackupArguments) (*postgres.BackupHandler, error) {
+func NewSegBackupHandler(arguments postgres.BackupArguments, useDatabaseComposer bool) (*postgres.BackupHandler, error) {
 	bh, err := postgres.NewBackupHandler(arguments)
 	if err != nil {
 		return nil, err
@@ -16,10 +16,17 @@ func NewSegBackupHandler(arguments postgres.BackupArguments) (*postgres.BackupHa
 		if err != nil {
 			return err
 		}
-
-		maker, err := NewGpTarBallComposerMaker(relStorageMap, bh.Workers.Uploader, handler.CurBackupInfo.Name)
-		if err != nil {
-			return err
+		var maker postgres.TarBallComposerMaker
+		if useDatabaseComposer {
+			maker, err = NewGpTarBallComposerMaker(relStorageMap, bh.Workers.Uploader, handler.CurBackupInfo.Name)
+			if err != nil {
+				return err
+			}
+		} else {
+			maker, err = NewGpTarBallComposerMaker(relStorageMap, bh.Workers.Uploader, handler.CurBackupInfo.Name)
+			if err != nil {
+				return err
+			}
 		}
 
 		return bh.Workers.Bundle.SetupComposer(maker)
