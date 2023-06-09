@@ -52,8 +52,15 @@ var segBackupFetchCmd = &cobra.Command{
 				internal.UseReverseUnpackSetting, internal.SkipRedundantTarsSetting)
 		}
 
-		pgFetcher := postgres.GetPgFetcherOld(args[0], fileMask, restoreSpec,
-			&greenplum.ExtractProviderImpl{})
+		var extractProv postgres.ExtractProvider
+
+		if onlyDatabases != nil {
+			extractProv = greenplum.NewExtractProviderDBSpec(onlyDatabases)
+		} else {
+			extractProv = greenplum.ExtractProviderImpl{}
+		}
+
+		pgFetcher := postgres.GetPgFetcherOld(args[0], fileMask, restoreSpec, extractProv)
 		internal.HandleBackupFetch(folder, targetBackupSelector, pgFetcher)
 	},
 }
