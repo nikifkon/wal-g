@@ -42,7 +42,6 @@ psql -p 6000 -d to_skip -c "INSERT INTO heap select i FROM generate_series(3,4)i
 psql -p 6000 -d to_skip -c "INSERT INTO ao select i, i FROM generate_series(3,4)i;"
 psql -p 6000 -d to_skip -c "INSERT INTO co select i, i FROM generate_series(3,4)i;"
 
-run_backup_logged ${TMP_CONFIG} ${PGDATA}
 stop_and_delete_cluster_dir
 
 wal-g --config=${TMP_CONFIG} backup-fetch ${PGDATA} LATEST --in-place --restore-only=to_restore
