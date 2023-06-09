@@ -47,6 +47,8 @@ stop_and_delete_cluster_dir
 
 wal-g --config=${TMP_CONFIG} backup-fetch ${PGDATA} LATEST --in-place --restore-only=to_restore
 
+start_cluster
+
 if [ "$(psql -p 6000 -t -c "select a from heap order by a;" -d to_restore -A)" != "$(printf '1\n2')" ]; then
   echo "Partial restore of heap table doesn't work"
   exit 1
@@ -59,7 +61,7 @@ if [ "$(psql -p 6000 -t -c "select a, b from co order by a, b;" -d to_restore -A
 echo "First database partial restore success!!!!!!"
 
 
-if [ "$(psql -p 6000 -t -c "select data from heap order by a;" -d to_skip -A)" != "$(printf '1|1\n2|2\n3|3\n4|4')" ]; then
+if [ "$(psql -p 6000 -t -c "select a from heap order by a;" -d to_skip -A)" != "$(printf '1|1\n2|2\n3|3\n4|4')" ]; then
   echo "Partial restore of heap table doesn't work 1"
   exit 1
 if [ "$(psql -p 6000 -t -c "select a, b from ao order by a, b;" -d to_skip -A)" != "$(printf '1|1\n2|2\n3|3\n4|4')" ]; then
@@ -70,7 +72,6 @@ if [ "$(psql -p 6000 -t -c "select a, b from co order by a, b;" -d to_skip -A)" 
   exit 1
 echo "First database partial restore success!!!!!!"
 
-start_cluster
 cleanup
 
 # wal-g --config=${TMP_CONFIG} delete everything FORCE --confirm

@@ -81,6 +81,7 @@ func init() {
 		"", targetUserDataDescription)
 	segBackupFetchCmd.PersistentFlags().IntVar(&contentID, "content-id", 0, "segment content ID")
 	_ = segBackupFetchCmd.MarkFlagRequired("content-id")
+	backupFetchCmd.Flags().StringSliceVar(&onlyDatabases, "restore-only", nil, restoreOnlyDescription)
 	// Since this is a utility command called by backup-fetch, it should not be exposed to the end user.
 	segBackupFetchCmd.Hidden = true
 	cmd.AddCommand(segBackupFetchCmd)

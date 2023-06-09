@@ -52,6 +52,7 @@ type FetchHandler struct {
 	contentIDsToFetch   map[int]bool
 	fetchMode           BackupFetchMode
 	restorePoint        string
+	onlyDatabases       []string
 }
 
 // nolint:gocritic
@@ -59,7 +60,7 @@ func NewFetchHandler(
 	backup internal.Backup, sentinel BackupSentinelDto,
 	segCfgMaker SegConfigMaker, logsDir string,
 	fetchContentIds []int, mode BackupFetchMode,
-	restorePoint string,
+	restorePoint string, onlyDatabases []string,
 ) *FetchHandler {
 	backupIDByContentID := make(map[int]string)
 	segmentConfigs := make([]cluster.SegConfig, 0)
@@ -91,6 +92,7 @@ func NewFetchHandler(
 		contentIDsToFetch:   prepareContentIDsToFetch(fetchContentIds, segmentConfigs),
 		fetchMode:           mode,
 		restorePoint:        restorePoint,
+		onlyDatabases:       onlyDatabases,
 	}
 }
 
@@ -246,6 +248,7 @@ func (fh *FetchHandler) buildFetchCommand(contentID int) string {
 		fmt.Sprintf("--content-id=%d", segment.ContentID),
 		fmt.Sprintf("--target-user-data=%s", segUserData.QuotedString()),
 		fmt.Sprintf("--config=%s", internal.CfgFile),
+		fmt.Sprintf("--restore-only=%s", strings.Join(fh.onlyDatabases[:], ",")),
 		// forward STDOUT& STDERR to log file
 		">>", formatSegmentLogPath(contentID), "2>&1",
 	}
@@ -256,7 +259,7 @@ func (fh *FetchHandler) buildFetchCommand(contentID int) string {
 }
 
 func NewGreenplumBackupFetcher(restoreCfgPath string, inPlaceRestore bool, logsDir string,
-	fetchContentIds []int, mode BackupFetchMode, restorePoint string,
+	fetchContentIds []int, mode BackupFetchMode, restorePoint string, onlyDatabases []string,
 ) func(folder storage.Folder, backup internal.Backup) {
 	return func(folder storage.Folder, backup internal.Backup) {
 		tracelog.InfoLogger.Printf("Starting backup-fetch for %s", backup.Name)
@@ -270,7 +273,7 @@ func NewGreenplumBackupFetcher(restoreCfgPath string, inPlaceRestore bool, logsD
 		segCfgMaker, err := NewSegConfigMaker(restoreCfgPath, inPlaceRestore)
 		tracelog.ErrorLogger.FatalOnError(err)
 
-		err = NewFetchHandler(backup, sentinel, segCfgMaker, logsDir, fetchContentIds, mode, restorePoint).Fetch()
+		err = NewFetchHandler(backup, sentinel, segCfgMaker, logsDir, fetchContentIds, mode, restorePoint, onlyDatabases).Fetch()
 		tracelog.ErrorLogger.FatalOnError(err)
 	}
 }
