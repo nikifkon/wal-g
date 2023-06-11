@@ -7,7 +7,7 @@ TMP_CONFIG="/tmp/configs/tmp_config.json"
 cat ${CONFIG_FILE} > ${TMP_CONFIG}
 echo "," >> ${TMP_CONFIG}
 cat ${COMMON_CONFIG} >> ${TMP_CONFIG}
-/tmp/scripts/wrap_config_file.sh ${TMP_CONFIG}
+/tmp/pg_scripts/wrap_config_file.sh  ${TMP_CONFIG}
 source /tmp/tests/test_functions/util.sh
 
 bootstrap_gp_cluster
