@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e -x
 
 CONFIG_FILE="/tmp/configs/partial_restore_test_config.json"
