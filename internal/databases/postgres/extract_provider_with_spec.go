@@ -21,7 +21,7 @@ type ExtractProviderDBSpec struct {
 }
 
 func NewExtractProviderDBSpec(onlyDatabases []string) *ExtractProviderDBSpec {
-	return &ExtractProviderDBSpec{onlyDatabases: onlyDatabases}
+	return &ExtractProviderDBSpec{ExtractProviderImpl: ExtractProviderImpl{}, onlyDatabases: onlyDatabases}
 }
 
 func (p ExtractProviderDBSpec) Get(
