@@ -3,7 +3,7 @@ name: Unit tests
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, gp-partial-restore-docker-tests ]
   pull_request:
     branches: [ master ]
 

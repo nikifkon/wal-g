@@ -2,7 +2,7 @@ name: Docker tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, gp-partial-restore-docker-tests ]
   pull_request:
     branches: [ master ]
 

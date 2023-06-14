@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - gp-partial-restore-docker-tests
   pull_request:
 
 env:
