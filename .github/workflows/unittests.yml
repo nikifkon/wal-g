@@ -3,7 +3,7 @@ name: Unit tests
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ master, gp_dir_db_composer_docker_tests ]
   pull_request:
     branches: [ master ]
 

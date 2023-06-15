@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - gp_dir_db_composer_docker_tests
   pull_request:
 
 env:
